@@ -1,26 +1,30 @@
 html,
 body {
-    scroll-behavior: smooth;
-    color: $text-color;
+  scroll-behavior: smooth;
+  color: $text-color;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 img,
 figure,
 video {
-    display: inline-block;
-    max-width: 100%;
-    object-fit: cover;
+  display: inline-block;
+  max-width: 100%;
+  object-fit: cover;
 }
 
 a {
-    color: inherit;
-    text-decoration: none;
-    display: inline-block;
+  color: inherit;
+  text-decoration: none;
+  display: inline-block;
 }
 
 ul,
 ol {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }

@@ -54,13 +54,12 @@ class Order
     private ?string $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     /**
      * @var Collection<int, OrderItem>
      */
-    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'orderRef')]
+    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'orderRef', cascade: ['persist', 'remove'])]
     private Collection $orderItems;
 
     public function __construct()
@@ -119,11 +118,18 @@ class Order
 
     public function addOrderItem(OrderItem $orderItem): static
     {
-        if (!$this->orderItems->contains($orderItem)) {
-            $this->orderItems->add($orderItem);
-            $orderItem->setOrderRef($this);
+        //On boucle sur les orderItems existants dans la commande
+        foreach ($this->orderItems as $existingOrderItem) {
+            //On vérifie si le nouveau orderItem est identique à un orderItem existant
+            if ($existingOrderItem->equals($orderItem)) {
+                //Si c'est le cas, on incrémente la quantité de l'orderItem existant
+                $existingOrderItem->setQuantity($existingOrderItem->getQuantity() + 1);
+                return $this;
+            }
         }
 
+        $this->orderItems[] = $orderItem;
+        $orderItem->setOrderRef($this);
         return $this;
     }
 
