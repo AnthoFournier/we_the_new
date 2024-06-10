@@ -59,12 +59,30 @@ class Order
     /**
      * @var Collection<int, OrderItem>
      */
-    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'orderRef', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'orderRef', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $orderItems;
 
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
+    }
+
+    public function getPriceHT(): float
+    {
+        $priceHT = 0;
+        foreach ($this->orderItems as $orderItem) {
+            $priceHT += $orderItem->getPriceHT();
+        }
+        return $priceHT;
+    }
+
+    public function getPriceTTC(): float
+    {
+        $priceTTC = 0;
+        foreach ($this->orderItems as $orderItem) {
+            $priceTTC += $orderItem->getPriceTTC();
+        }
+        return $priceTTC;
     }
 
     public function getId(): ?int
@@ -142,6 +160,14 @@ class Order
             }
         }
 
+        return $this;
+    }
+
+    public function removeAllOrderItems(): static
+    {
+        foreach ($this->orderItems as $orderItem) {
+            $this->removeOrderItem($orderItem);
+        }
         return $this;
     }
 }
