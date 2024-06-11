@@ -5,7 +5,8 @@ namespace App\Form;
 use App\Entity\Delivery\Delivery;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,13 +22,13 @@ class DeliveryType extends AbstractType
                     'placeholder' => 'Nom',
                 ],
             ])
-            ->add('description', TextType::class, [
+            ->add('description', TextareaType::class, [
                 'label' => 'Description',
                 'attr' => [
                     'placeholder' => 'Votre description'
                 ]
             ])
-            ->add('price', NumberType::class, [
+            ->add('price', MoneyType::class, [
                 'label' => 'Prix',
                 'attr' => [
                     'placeholder' => 'Prix',

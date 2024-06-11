@@ -25,7 +25,7 @@
 						<td>{{ delivery.id }}</td>
 						<td>{{ delivery.name }}</td>
 						<td>{{ delivery.description }}</td>
-						<td>{{ delivery.price }}€</td>
+						<td>{{ delivery.price|format_currency('EUR') }}</td>
 						<td>{{ delivery.enable }}</td>
 						<td class="actions">
 							<div class="actions-container">
