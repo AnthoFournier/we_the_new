@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 #[Route('/checkout', name: 'app.checkout')]
 class CheckoutController extends AbstractController
@@ -95,6 +96,21 @@ class CheckoutController extends AbstractController
         return $this->render('Frontend/Checkout/shipping.html.twig', [
             'cart' => $cart,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/recap', name: '.recap', methods: ['GET', 'POST'])]
+    public function recap(): Response|RedirectResponse
+    {
+        $cart = $this->cartManager->getCurrentCart();
+
+        if ($cart->getOrderItems()->isEmpty()) {
+            $this->addFlash('danger', 'Vous n\'avez pas de produits en cours');
+            return $this->redirectToRoute('app.cart.show');
+        }
+
+        return $this->render('Frontend/Checkout/recap.html.twig', [
+            'cart' => $cart,
         ]);
     }
 }
