@@ -26,7 +26,7 @@
 						<td>{{ delivery.name }}</td>
 						<td>{{ delivery.description }}</td>
 						<td>{{ delivery.price|format_currency('EUR') }}</td>
-						<td>{{ delivery.enable }}</td>
+						<td>{{ delivery.enable ? 'Actif' : 'Inactif' }}</td>
 						<td class="actions">
 							<div class="actions-container">
 								<a href="{{ path('admin.delivery.edit', {id: delivery.id}) }}" class="btn btn-warning">Modifier</a>

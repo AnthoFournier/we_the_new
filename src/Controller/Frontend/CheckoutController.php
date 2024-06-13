@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Entity\Address;
 use App\Form\AddressType;
 use App\Manager\CartManager;
+use App\Entity\Delivery\Shipping;
+use App\Form\ShippingCheckoutType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +32,6 @@ class CheckoutController extends AbstractController
             $this->addFlash('danger', 'Votre panier est vide, veuillez ajouter des produits');
             return $this->redirectToRoute('app.cart.show');
         }
-
 
         /** @var User $user */
         $user = $this->getUser();
@@ -65,11 +66,35 @@ class CheckoutController extends AbstractController
     }
 
     #[Route('/shipping', name: '.shipping', methods: ['POST', 'GET'])]
-    public function shipping(): Response
+    public function shipping(Request $request): Response
     {
-        dd('shipping');
+        $cart = $this->cartManager->getCurrentCart();
 
-        //TODO: Implement shipping method selection
+        if ($cart->getOrderItems()->isEmpty()) {
+            $this->addFlash('danger', 'Vous n\'avez pas de produits en cours');
+            return $this->redirectToRoute('app.cart.show');
+        }
+        if (!$cart->getShippings()->isEmpty()) {
+            $shipping = $cart->getShippings()->last();
+        } else {
+            $shipping = (new Shipping)->setStatus(Shipping::STATUS_NEW);
+        }
+        $form = $this->createForm(ShippingCheckoutType::class, $shipping);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $shipping
+                ->setOrderRef($cart)
+                ->setStatus(Shipping::STATUS_NEW);
+            $this->em->persist($shipping);
+            $this->em->flush();
+
+            return $this->redirectToRoute('app.checkout.recap');
+        }
+
+        return $this->render('Frontend/Checkout/shipping.html.twig', [
+            'cart' => $cart,
+            'form' => $form,
+        ]);
     }
 }
