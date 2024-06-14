@@ -28,6 +28,7 @@ class CartManager
     {
         $cart = $this->cartSessionStorage->getCart();
 
+
         //On vérifie si un utilusateur est connecté actuellement
         $user = $this->security->getUser();
         if (!$cart) {
@@ -47,6 +48,7 @@ class CartManager
                 $cart = $this->mergeCart($cartDb, $cart);
             }
         }
+
         return $cart ?? $this->orderFactory->create();
     }
 
