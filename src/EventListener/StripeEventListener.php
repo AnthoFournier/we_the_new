@@ -69,6 +69,7 @@ class StripeEventListener
         //On met à jour le statut du paiement
         $payment->setStatus(Payment::STATUS_FAILED);
         $order->setStatus(Order::STATUS_AWAITING_PAYMENT);
+        $order->setNumber('ORD-' . $order->getId() . '-' . date('YmdHis'));
 
         $this->em->persist($payment);
         $this->em->persist($order);
