@@ -4,12 +4,10 @@ namespace App\Form;
 
 use App\Entity\Delivery\Delivery;
 use App\Entity\Delivery\Shipping;
-use App\Entity\Order\Order;
 use App\Repository\Delivery\DeliveryRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
