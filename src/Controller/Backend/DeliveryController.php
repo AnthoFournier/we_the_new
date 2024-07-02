@@ -4,7 +4,6 @@ namespace App\Controller\Backend;
 
 use App\Form\DeliveryType;
 use App\Entity\Delivery\Delivery;
-use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
